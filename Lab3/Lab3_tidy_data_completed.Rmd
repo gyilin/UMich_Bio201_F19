@@ -293,9 +293,7 @@ mutate(sample_kg = sample_wt_g / 1000) %>%
 mutate(acetate_mmol_kg = round((acetate_mM*0.002/sample_kg), digits = 2)) %>% 
 mutate(butyrate_mmol_kg = round((butyrate_mM*0.002/ sample_kg), digits = 2)) %>%
 mutate(propionate_mmol_kg = round((propionate_mM*0.002/sample_kg), digits = 2)) %>%
-mutate(total_scfa_mmol_kg = round((butyrate_mmol_kg + propionate_mmol_kg + acetate_mmol_kg), digits = 2))
-
-scfa_indv_qc
+mutate(total_scfa_mmol_kg = round((butyrate_mmol_kg + propionate_mmol_kg + acetate_mmol_kg), digits = 2)) 
 
 ```
 
@@ -326,7 +324,7 @@ Import the scfa_wkly data from the Excel file. Complete the following QC measure
 scfa_wkly_qc <- read_excel("raw_data/SCFA_data.xlsx",
                         sheet = "SCFA_wkly", col_names = TRUE, trim_ws = TRUE, 
                         na = c("", "NA", "-----")) 
-scfa_wkly_qc %>%
+scfa_wkly_qc2 <- scfa_wkly_qc %>%
 rename_all(tolower) %>%
 filter(study_week == "week1" | study_week == "week3") %>%
 filter(quantity_compliant == "yes") %>%
@@ -336,7 +334,7 @@ mutate(total_median = (butyrate_median + propionate_median + acetate_median ) /3
 
 Export this curated data frame:
 ```{r}
-write_delim(scfa_wkly_qc, path = "curated_data/scfa_wkly_qc.txt", delim = "\t")
+write_delim(scfa_wkly_qc2, path = "curated_data/scfa_wkly_qc2.txt", delim = "\t")
 ```
 
 
