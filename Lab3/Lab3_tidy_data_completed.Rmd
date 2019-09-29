@@ -330,7 +330,8 @@ scfa_wkly_qc %>%
 rename_all(tolower) %>%
 filter(study_week == "week1" | study_week == "week3") %>%
 filter(quantity_compliant == "yes") %>%
-mutate(total_mean = (butyrate_mean + propionate_mean + acetate_mean ) /3)
+mutate(total_mean = (butyrate_mean + propionate_mean + acetate_mean ) /3) %>%
+mutate(total_median = (butyrate_median + propionate_median + acetate_median ) /3) 
 ```
 
 Export this curated data frame:
