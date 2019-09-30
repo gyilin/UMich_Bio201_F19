@@ -32,24 +32,22 @@ ggplot2 functions like data in the ‘long’ format, i.e., a column for every d
 # import curated data set, save as new data frame 
 scfa_qc <- read_delim(file = "curated_data/scfa_wkly_qc.txt", 
                         delim = "\t", escape_double = FALSE, trim_ws = TRUE, na=c("NA"),
-                        col_types = list())%>%
+                        col_types = list()) %>% 
+
 # drop median columns
-select(-Acetate_median, -Butyrate_median, -Propionate_median, -total_SCFA_median)%>%
+select(-acetate_median_mmol_kg, -butyrate_median_mmol_kg, -propionate_median_mmol_kg, -total_SCFA_median_mmol_kg) %>% 
 
 # keep only individuals who consumed full starch dose
-filter(Quantity_compliant == "yes")
+filter(quantity_compliant == "yes") %>% 
 
 # covert columns to snake case 
-scfa_qc <- rename_all(scfa_qc, tolower)
+rename_all(tolower)
 
 # add units to SCFA measurements 
-scfa_qc <- rename(scfa_qc, acetate_mean_mmol_kg = acetate_mean, 
-                  butyrate_mean_mmol_kg = butyrate_mean, 
-                  propionate_mean_mmol_kg = propionate_mean)
-
+# Have already done before it is created
 # calculate total SCFA
-scfa_qc <- rename(scfa_qc, total_scfa_mean_mmol_kg = total_scfa_mean)
-# There is already a total_scfa_mean, so I just change the name of it.
+# Have already done before it is created
+
 ```
 
 # Plotting with ggplot 2
@@ -244,6 +242,7 @@ plot_pro <- ggplot(data = scfa_qc,
     labs(title = "Mean propionate concentrations of individuals",
          x = NULL,
          y = "Fecal propionate (mmol/kg)") 
+plot_pro
 ```
 
 ```{r}
@@ -255,6 +254,7 @@ plot_tot <- ggplot(data = scfa_qc,
     labs(title = "Mean total SCFA concentrations of individuals",
          x = NULL,
          y = "Fecal total SCFA (mmol/kg)") 
+plot_tot
 ```
 
 
