@@ -1,4 +1,4 @@
-Participant_ID	Study_week	Frequency	Semester	Supplement_consumed	Quantity_compliant	Acetate_median	Acetate_mean	Butyrate_median	Butyrate_mean	Propionate_median	Propionate_mean	total_SCFA_median	total_SCFA_mean
+participant_id	study_week	frequency	semester	supplement_consumed	quantity_compliant	acetate_median_mmol_kg	acetate_mean_mmol_kg	butyrate_median_mmol_kg	butyrate_mean_mmol_kg	propionate_median_mmol_kg	propionate_mean_mmol_kg	total_SCFA_median_mmol_kg	total_SCFA_mean_mmol_kg
 U001	week1	2xdaily	Winter2015	BRMPS	yes	18.84	18.42	4.79	11.38	4.12	4.01	27.75	33.81
 U001	week3	2xdaily	Winter2015	BRMPS	yes	24.51	24.45	6.67	8.19	2.53	2.57	33.71	35.21
 U004	week1	2xdaily	Winter2015	BRMPS	yes	27.6	27.6	17.02	17.02	12.32	12.32	56.940000000000005	56.940000000000005
