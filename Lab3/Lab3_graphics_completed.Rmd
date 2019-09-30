@@ -217,9 +217,8 @@ Recreate the scatter plot from the above for each SCFA. Identify descriptive axi
 plot_ace <- ggplot(data = scfa_qc, 
        mapping = aes(x = study_week, 
                      y = acetate_mean_mmol_kg, 
-                     color = supplement_consumed, 
                      group = participant_id)) +
-    geom_line() +
+    geom_line(colour = "skyblue2") +
     labs(title = "Mean acetate concentrations of individuals",
          x = NULL,
          y = "Fecal acetate (mmol/kg)") 
@@ -229,9 +228,8 @@ plot_ace <- ggplot(data = scfa_qc,
 plot_but <- ggplot(data = scfa_qc, 
        mapping = aes(x = study_week, 
                      y = butyrate_mean_mmol_kg, 
-                     color = supplement_consumed, 
                      group = participant_id)) +
-    geom_line() +
+    geom_line(colour = "pink2" ) +
     labs(title = "Mean butyrate concentrations of individuals",
          x = NULL,
          y = "Fecal butyrate (mmol/kg)") 
@@ -241,9 +239,8 @@ plot_but <- ggplot(data = scfa_qc,
 plot_pro <- ggplot(data = scfa_qc, 
        mapping = aes(x = study_week, 
                      y = propionate_mean_mmol_kg, 
-                     color = supplement_consumed, 
                      group = participant_id)) +
-    geom_line() +
+    geom_line(colour = "palegreen3") +
     labs(title = "Mean propionate concentrations of individuals",
          x = NULL,
          y = "Fecal propionate (mmol/kg)") 
@@ -253,9 +250,8 @@ plot_pro <- ggplot(data = scfa_qc,
 plot_tot <- ggplot(data = scfa_qc, 
        mapping = aes(x = study_week, 
                      y = total_scfa_mean_mmol_kg, 
-                     color = supplement_consumed, 
                      group = participant_id)) +
-    geom_line() +
+    geom_line(colour = "goldenrod2") +
     labs(title = "Mean total SCFA concentrations of individuals",
          x = NULL,
          y = "Fecal total SCFA (mmol/kg)") 
