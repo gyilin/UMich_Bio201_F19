@@ -30,17 +30,17 @@ ggplot2 functions like data in the ‘long’ format, i.e., a column for every d
 ### Homework 3.4
 ```{r}
 # import curated data set, save as new data frame 
-scfa_qc <- read_delim(file = "curated_data/scfa_wkly_qc.txt", 
+scfa_qc <- read_delim(file = "curated_data/scfa_wkly_qc2.txt", 
                         delim = "\t", escape_double = FALSE, trim_ws = TRUE, na=c("NA"),
                         col_types = list())
 
 # drop median columns
  scfa_qc_2 <- scfa_qc %>%
   
-select (-Acetate_median, -Butyrate_median, -Propionate_median) %>%
+select (-acetate_median, -butyrate_median, -propionate_median) %>%
 
 # keep only individuals who consumed full starch dose
-filter(Quantity_compliant == "yes" ) %>%
+filter(quantity_compliant == "yes" ) %>%
 
 # covert columns to snake case 
 
@@ -224,7 +224,8 @@ Recreate the scatter plot from the above for each SCFA. Identify descriptive axi
     geom_point(color = "skyblue4") +
     labs(title = "Mean acetate concentrations of individuals",
          x = "Individuals",
-         y = "Fecal acetate (mmol/kg)") 
+         y = "Fecal acetate (mmol/kg)")+
+      theme(axis.text.x = element_blank())
 plot_ace
 ```
 
@@ -236,7 +237,9 @@ plot_but <- ggplot(data = scfa_qc_2,
     geom_point(color = "bisque1") +
     labs(title = "Mean butyrate concentrations of individuals",
          x = "Individuals",
-         y = "Fecal butyrate (mmol/kg)") 
+         y = "Fecal butyrate (mmol/kg)")+    
+  theme(axis.text.x = element_blank())
+
 plot_but
 ```
 
@@ -248,7 +251,9 @@ plot_pro <- ggplot(data = scfa_qc_2,
     geom_point(color = "sienna4") +
     labs(title = "Mean propionate concentrations of individuals",
          x = "Individuals",
-         y = "Fecal propionate (mmol/kg)") 
+         y = "Fecal propionate (mmol/kg)")+
+      theme(axis.text.x = element_blank())
+plot_pro
 ```
 
 ```{r}
@@ -259,7 +264,8 @@ plot_tot <- ggplot(data = scfa_qc_2,
     geom_point(color = "sienna3") +
     labs(title = "Mean total concentrations of individuals",
          x = "Individuals",
-         y = "Fecal total scfa (mmol/kg)") 
+         y = "Fecal total scfa (mmol/kg)")+
+      theme(axis.text.x = element_blank())
 plot_tot
 ```
 
@@ -336,14 +342,16 @@ Complete any additional customizations to make the figure easy to read. Compare 
 Plot the mean butyrate concentration for week 3 versus semester. In this plot, each facet should be one of the supplement types consumed during the study. Modify the plot settings so all labels are descriptive and easy to read. Tip: read the help documentation for facet_grid and modify some of the default arguments. 
 ```{r}
 plot3_6 <- scfa_qc_2 %>%
- filter(supplement_consumed == "BRMPS" | supplement_consumed == "Psyllium" | supplement_consumed == "Accessible" | supplement_consumed == "HiMaize" | supplement_consumed == "Arabino" | supplement_consumed == "insulin" | supplement_consumed == "LOODAT" | supplement_consumed == "transition_HiMaize" | supplement_consumed == "HiMaize+BRMPS"| supplement_consumed == "BRMPS+Accessible" | supplement_consumed == "BRMPS+Psyllium") %>%
+filter(study_week == "week3") %>%
   
-ggplot(aes(x = participant_id, 
+#filter(supplement_consumed == "BRMPS" | supplement_consumed == "Psyllium" | supplement_consumed == "Accessible" | supplement_consumed == "HiMaize" | supplement_consumed == "Arabino" | supplement_consumed == "insulin" | supplement_consumed == "LOODAT" | supplement_consumed == "transition_HiMaize" | supplement_consumed == "HiMaize+BRMPS"| supplement_consumed == "BRMPS+Accessible" | supplement_consumed == "BRMPS+Psyllium") 
+  
+ggplot(aes(x = semester, 
              y = butyrate_mean_mmol_kg, 
              study_week, supplement_consumed, semester)) +
   geom_point(aes(color = "week3")) +
   facet_grid(~supplement_consumed) +
-  labs(x = "Individuals",
+  labs(x = "semster",
        y = "Mean butyrate concentrations of individuals (mmol/kg)") +
     theme(axis.text.x = element_blank(),
         legend.position = "none")
@@ -373,7 +381,7 @@ ggplot2::ggsave(filename = "facet_plot.tiff",
 ### Homework 3.7
 Export plot 3.6 
 ```{r}
-save_plot(filename = "figures/facet_plot.pdf",
+save_plot(filename = "figures/facet_plot1.pdf",
           plot = plot3_6,
           nrow = 1, ncol = 9, 
           base_aspect_ratio = 1.1)
