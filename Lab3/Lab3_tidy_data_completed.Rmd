@@ -289,8 +289,9 @@ scfa_indv_qc <- scfa_indv %>%
          butyrate_mmol_kg = (butyrate_mM*0.002)/sample_kg,
          propionate_mmol_kg = (propionate_mM*0.002)/sample_kg,
          total_scfa_mmol_kg = round((acetate_mmol_kg + butyrate_mmol_kg + propionate_mmol_kg), digits = 2)) %>% 
-  select(-ht_in, -wt_lbs, -sample_wt_g, -acetate_mmol_kg, -butyrate_mmol_kg, -propionate_mmol_kg)
+  select(-ht_in, -wt_lbs, -sample_wt_g, -acetate_mM, -butyrate_mM, -propionate_mM)
 
+colnames(scfa_indv_qc)
 ```
 
 Swap your code with your neighbor, does their code run on your computer? Are the outputs the same?
