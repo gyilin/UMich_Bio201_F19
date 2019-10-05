@@ -333,7 +333,7 @@ Plot the mean butyrate concentration for week 3 versus semester. In this plot, e
 plot3_6 <- scfa_qc %>%
   filter(study_week == "week3") %>%
   ggplot(aes(x = semester, 
-             y = total_scfa_mean_mmol_kg, 
+             y = butyrate_mean_mmol_kg, 
              study_week, supplement_consumed, semester)) +
   geom_point(aes(color = supplement_consumed)) +
   facet_grid( ~ supplement_consumed) + 
