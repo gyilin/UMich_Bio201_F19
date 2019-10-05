@@ -349,12 +349,11 @@ filter(study_week == "week3") %>%
 ggplot(aes(x = semester, 
              y = butyrate_mean_mmol_kg, 
              study_week, supplement_consumed, semester)) +
-  geom_point(aes(color = "week3")) +
-  facet_grid(~supplement_consumed) +
+  geom_point(aes(color = "butyrate_mean_mmol_kg")) +
+  facet_grid(~supplement_consumed, scale = "free") +
   labs(x = "semster",
        y = "Mean butyrate concentrations of individuals (mmol/kg)") +
-    theme(axis.text.x = element_blank(),
-        legend.position = "none")
+    theme(legend.position = "none")
 
 plot3_6
 ```
@@ -383,7 +382,7 @@ Export plot 3.6
 ```{r}
 save_plot(filename = "figures/facet_plot1.pdf",
           plot = plot3_6,
-          nrow = 1, ncol = 9, 
+          nrow = 1, ncol = 12, 
           base_aspect_ratio = 1.1)
 ```
 
