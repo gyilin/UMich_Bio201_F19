@@ -348,10 +348,8 @@ Part 2: Plot the change in total SCFA for each supplement, faceting for each sem
 ```{r}
 # write code here
 plot_scfa <- total_scfas %>%
-group_by(semester, supplement_consumed) %>%
-  summarize(mean_delta_total_scfas = mean(delta_total_scfa)) %>% 
-  ggplot(aes(x = supplement_consumed, 
-             y = mean_delta_total_scfas, )) +
+  
+  ggplot(aes(x = supplement_consumed, y = delta_total_scfa)) +
   geom_point(aes(color = supplement_consumed)) +
   facet_grid(~semester) + 
   theme(axis.text.x = element_blank(),
@@ -554,7 +552,7 @@ To make sure that everyone has the same data set, check the number of rows and c
 dim(pH_BSS_wkly)
 ```
 If you do not have 748 rows and 4 columns, review your code with your neighbors, can you identify what went wrong?
-
+  
 Now that the data are ready, save it as a CSV file in the curated_data directory.
 ```{r}
 write_delim(pH_BSS_wkly, path = "C:/Users/tina5/OneDrive/桌面/UMich_Bio201_F19/Lab4/curated_data/ph_BSS_wkly.csv", delim = "\t")
