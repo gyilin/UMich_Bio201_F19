@@ -1,6 +1,6 @@
 ---
 title: 'Lab 4: Graphics part 2'
-author: "Kristi Gdanetz MacCready"
+author: "Yilin Guan"
 date: "9/30/2019"
 output: html_document
 ---
@@ -31,7 +31,7 @@ pH_BSS_wkly <- read_delim(file = "Lab4/curated_data/pH_BSS_wkly.txt",
 scfa_indv_qc <- read_delim(file = "Lab3/curated_data/scfa_indv_qc.txt", 
            delim = "\t", col_names = TRUE, trim_ws = TRUE, na = c("NA"))
 
-SCFA_wkly_qc <- read_delim(file = "Lab3/curated_data/SCFA_wkly_qc.txt", 
+SCFA_wkly_qc <- read_delim(file = "Lab3/curated_data/SCFA_wkly_qc2.txt", 
            delim = "\t", col_names = TRUE, trim_ws = TRUE, na = c("NA"))
 ```
 
@@ -59,9 +59,11 @@ Notice the y-axis. We know a butyrate concentration of 20,000 is not correct. He
 
 ```{r}
 # calculate weekly mean per participant
+scfa_indv_qc <- rename(scfa_indv_qc, c("race/ethnicity" = "race_ethnicity")) 
 scfa_wkly_qc <- scfa_indv_qc %>%
-  group_by(participant_id, study_week, race_ethnicity, semester, supplement_consumed) %>%
-  summarize(mean_wkly_butyrate = mean(butyrate_mmol_kg, na.rm=TRUE), 
+group_by(participant_id, study_week, semester, supplement_consumed, 
+         race_ethnicity) %>%
+summarize(mean_wkly_butyrate = mean(butyrate_mmol_kg, na.rm=TRUE), 
             sd_wkly_butyrate = sd(butyrate_mmol_kg, na.rm=TRUE))
 ```
 Inspect the results. We have some individuals where race/ethnicity was not recorded, should these be included?
