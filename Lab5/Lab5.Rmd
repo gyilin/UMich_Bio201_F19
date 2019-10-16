@@ -598,7 +598,7 @@ x1_pro_df <- inner_join(x = wk1_prop_1x, y = wk3_prop_1x,
   select(-starts_with("study_week"))
 # code to run paired t-test 
 t.test(x = x1_pro_df$propionate_mean_wk1, y = x1_pro_df$propionate_mean_wk3, 
-       alternative = "less", paired = TRUE) 
+       alternative = "less", paired = TRUE, var=FALSE) 
 
 # p value is 0.3063 which means the p value is not low enough to reject the null hypothesis. Therefore, This means We can say with confidence that the propionate concentrations between weeks 1 and 3 are equal for individuals who consumed BRMPS.
 ```
