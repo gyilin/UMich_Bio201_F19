@@ -1,6 +1,6 @@
 ---
 title: "Lab 5 new"
-author: ""
+author: "Yilin Guan"
 date: "10/07/2019"
 output: html_document
 ---
