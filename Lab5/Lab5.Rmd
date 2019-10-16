@@ -327,7 +327,7 @@ x1_df <- inner_join(x = wk1_1x, y = wk3_1x,
 # code to run paired t-test 
 t.test(x = x1_df$butyrate_mean_wk1, y = x1_df$butyrate_mean_wk3, 
        alternative = "less", paired = TRUE) 
-#the p value is 0.23 which is larger than the 0.05 and thus fails to reject the null. This means We can say with confidence that the butyrate concentrations between weeks 1 and 3 are  equal for individuals who consumed BRMPS once daily. 
+#the p value is 0.23 which is larger than the 0.05 and thus fails to reject the null. This means We can say with confidence that the butyrate concentrations between weeks 1 and 3 are equal for individuals who consumed BRMPS once daily. 
 
 ```
 
@@ -345,12 +345,17 @@ methane_long_diff <- methane_long %>%
          quantity_compliant == "yes") %>%
   na.omit(ch4_mean) #drop any samples with NA in named columns
 
-methane_long_diff %>%
+plot_methane_violin <- methane_long_diff %>%
   filter(study_week == "week3" | study_week == "week1") %>%
   ggplot(aes(x = study_week, 
              y = ch4_mean)) + 
   geom_violin() + 
   geom_jitter()
+
+save_plot(filename = "Lab5/figures/violin_methane.pdf",
+          plot = plot_methane_violin,
+          nrow = 1, ncol = 2, 
+          base_aspect_ratio = 1.1)
 ```
 
 ```{r}
@@ -363,13 +368,18 @@ acetate_long <- scfa_long %>%
          quantity_compliant == "yes") %>%
   na.omit(acetate_mean) #drop any samples with NA in named columns
 
-# Generate a plot of the [butyrate] of each supplement type, week 3 only  
-acetate_long %>%
+
+ plot_acetate_violin <- acetate_long %>%
   filter(study_week == "week3") %>%
   ggplot(aes(x = frequency, 
              y = acetate_mean)) + 
   geom_violin() +
   geom_jitter()
+ 
+ save_plot(filename = "Lab5/figures/violin_acetate.pdf",
+          plot = plot_acetate_violin,
+          nrow = 1, ncol = 2, 
+          base_aspect_ratio = 1.1)
 ```
 
 ```{r}
@@ -383,13 +393,19 @@ propionate_long <- scfa_long %>%
          quantity_compliant == "yes") %>%
   na.omit(propionate_mean) #drop any samples with NA in named columns
 
-# Generate a plot of the [butyrate] of each supplement type, week 3 only  
-propionate_long %>%
+
+plot_propionate_violin <- propionate_long %>%
   filter(study_week == "week3") %>%
   ggplot(aes(x = frequency, 
              y = propionate_mean)) + 
   geom_violin() +
   geom_jitter()
+ 
+save_plot(filename = "Lab5/figures/violin_propionate.pdf",
+          plot = plot_propionate_violin,
+          nrow = 1, ncol = 2, 
+          base_aspect_ratio = 1.1)
+
 ```
 
 ```{r}
@@ -405,13 +421,17 @@ ph_long_diff <- ph_long %>%
          quantity_compliant == "yes") %>%
   na.omit(ph_mean) #drop any samples with NA in named columns
 
-ph_long_diff %>%
+plot_ph_violin <- ph_long_diff %>%
   filter(study_week == "week3" | study_week == "week1") %>%
   ggplot(aes(x = study_week, 
              y = ph_mean)) + 
   geom_violin() +
   geom_jitter()
 
+save_plot(filename = "Lab5/figures/violin_ph.pdf",
+          plot = plot_ph_violin,
+          nrow = 1, ncol = 2, 
+          base_aspect_ratio = 1.1)
 
 ```
 
@@ -438,7 +458,11 @@ wk3_ch42x <- methane_long %>%
 shapiro.test(wk3_ch42x$ch4_mean) 
 ggplot(wk3_ch42x, aes(x = ch4_mean)) + geom_histogram()
 
+var.test(x = wk1_ch4x$ch4_mean, 
+         y = wk3_ch42x$ch4_mean, 
+         alternative = "two.sided")
 
+#the normality value is small enough along with the graph which shows no bell-shape distribution to reject the null that the value is not normal distrubution to continue the paired t test
 ```
 
 ```{r}
@@ -462,6 +486,12 @@ wk3_ace_1x <- acetate_long %>%
 shapiro.test(wk3_ace_1x$acetate_mean) 
 ggplot(wk3_ace_1x, aes(x = acetate_mean)) + geom_histogram()
 
+var.test(x = wk1_ace_1x$acetate_mean, 
+         y = wk3_ace_1x$acetate_mean, 
+         alternative = "two.sided")
+
+
+#although the normality value is small enough to reject the null, the distrubution graph shows  bell-shape and thus we can continue t test.
 
 ```
 
@@ -485,6 +515,13 @@ wk3_prop_1x <- propionate_long %>%
          supplement_consumed == "BRMPS") 
 shapiro.test(wk3_prop_1x$propionate_mean) 
 ggplot(wk3_prop_1x, aes(x = propionate_mean)) + geom_histogram()
+
+var.test(x = wk1_prop_1x$propionate_mean, 
+         y = wk3_prop_1x$propionate_mean, 
+         alternative = "two.sided")
+#variance p value is 0.005322; which rejects the null and indicates the variance of week 1 and week 3 is not equal.
+
+#although the normality value is small enough to reject the null, the distrubution graph shows  bell-shape and thus we can continue t test.
 ```
 
 ```{r}
@@ -508,6 +545,12 @@ wk3_ph2x <- ph_long %>%
          supplement_consumed == "BRMPS") 
 shapiro.test(wk3_ph2x$ph_mean) 
 ggplot(wk3_ph2x, aes(x = ph_mean)) + geom_histogram()
+
+var.test(x = wk1_ph2x$ph_mean, 
+         y = wk3_ph2x$ph_mean, 
+         alternative = "two.sided")
+
+#although the normality value is small enough to reject the null, the distrubution graph shows  bell-shape and thus we can continue t test.
 ```
 
 # Homework 5.4
@@ -540,7 +583,7 @@ x1_ace_df <- inner_join(x = wk1_ace_1x, y = wk3_ace_1x,
 # code to run paired t-test 
 t.test(x = x1_ace_df$acetate_mean_wk1, y = x1_ace_df$acetate_mean_wk3, 
        alternative = "less", paired = TRUE) 
-# p value is 0.072 which means the p value is low enough to reject the null hypothesis. Therefore, This means We can say with confidence that the acetate concentrations between weeks 1 and 3 arenot equal for individuals who consumed BRMPS.
+# p value is 0.072 which means the p value is low enough to reject the null hypothesis. Therefore, This means We can say with confidence that the acetate concentrations between weeks 1 and 3 are not equal for individuals who consumed BRMPS.
 
 ```
 
@@ -679,59 +722,152 @@ Repeat the processing of checking assumptions to conduct ANOVA on delta acetate 
 
 s1 <- scfa_wide %>%
   filter(supplement_consumed == "Accessible") 
-shapiro.test(s1$delta_acetate) #p-value = 0.6886
+shapiro.test(s1$delta_acetate) #p-value = 0.674
 
 s2 <- scfa_wide %>%
   filter(supplement_consumed == "Arabino") 
-shapiro.test(s2$delta_acetate) #p-value = 0.7785
+shapiro.test(s2$delta_acetate) #p-value = 0.5369
 
 s3 <- scfa_wide %>%
   filter(supplement_consumed == "BRMPS+Accessible")
-shapiro.test(s3$delta_acetate) #p-value = 0.4633
+shapiro.test(s3$delta_acetate) #p-value = 0.8305
 
 s4 <- scfa_wide %>%
   filter(supplement_consumed == "HiMaize") 
-shapiro.test(s4$delta_acetate) #p-value = 0.7113
+shapiro.test(s4$delta_acetate) #p-value = 0.001526
 
 s5 <- scfa_wide %>%
   filter(supplement_consumed == "HiMaize+BRMPS") 
-shapiro.test(s5$delta_acetate) #p-value = 0.6287
+shapiro.test(s5$delta_acetate) #p-value = 0.3026
 
 s6 <- scfa_wide %>%
   filter(supplement_consumed == "Inulin") 
-shapiro.test(s6$delta_acetate) #p-value = 0.492
+shapiro.test(s6$delta_acetate) #p-value = 0.9105
 
 s7 <- scfa_wide %>%
   filter(supplement_consumed == "LOODAT") 
-shapiro.test(s7$delta_acetate) # p-value = 0.6976
+shapiro.test(s7$delta_acetate) # p-value = 0.137
 
 s8 <- scfa_wide %>%
   filter(supplement_consumed == "none") 
-shapiro.test(s8$delta_acetate) # p-value = 0.009887
+shapiro.test(s8$delta_acetate) # p-value = 0.3468
 
 s9 <- scfa_wide %>%
   filter(supplement_consumed == "Psyllium") 
-shapiro.test(s9$delta_acetate) # p-value = 0.2783
+shapiro.test(s9$delta_acetate) # p-value = 0.7713
 
 s10 <- scfa_wide %>%
   filter(supplement_consumed == "Psyllium+BRMPS") 
-shapiro.test(s10$delta_acetate) # p-value = 0.04406
+shapiro.test(s10$delta_acetate) # p-value = 0.9725
 
 s11 <- scfa_wide %>%
   filter(supplement_consumed == "transition_HiMaize") 
-shapiro.test(s11$delta_acetate) # P value = 0.06542
+shapiro.test(s11$delta_acetate) # P value = 0.6092
 
 s12 <- scfa_wide %>%
   filter(supplement_consumed == "BRMPS") 
-shapiro.test(s12$delta_acetate) #P=0.2537
+shapiro.test(s12$delta_acetate) #P=0.02496
 
 bartlett.test(delta_acetate ~ supplement_consumed, data = scfa_wide)
 
 aov_ace_results <- aov(delta_acetate ~ supplement_consumed, data = scfa_wide)
 summary(aov_ace_results)
+
+
+plot_acetate <- scfa_wide %>%
+ggplot(aes(x = supplement_consumed,
+             y = delta_acetate,
+             color = supplement_consumed)) +
+  geom_hline(yintercept = 0,
+             linetype = "dashed") + 
+  geom_violin() + 
+  geom_jitter() + 
+  xlab(NULL) +
+  ylab("Acetate mmol/kg (wk3 - wk1)") + 
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+save_plot(filename = "Lab5/figures/anova_acetate.pdf",
+          plot = plot_acetate,
+          nrow = 1, ncol = 2, 
+          base_aspect_ratio = 1.1)
+
+# the p value is 0.197, which is large enough and fails to reject the null therefore, there's no overall difference in Acetate Acid production between week 3 and week1 under different supplements.
 ```
 
 ```{r}
 # propionate
+s1 <- scfa_wide %>%
+  filter(supplement_consumed == "Accessible") 
+shapiro.test(s1$delta_propionate) #p-value = 0.674
+
+#s2 <- scfa_wide %>%
+#filter(supplement_consumed == "Arabino") 
+#shapiro.test(s2$delta_propionate) 
+#the sample size is less than 3; fails to check the assumptions 
+
+s3 <- scfa_wide %>%
+  filter(supplement_consumed == "BRMPS+Accessible")
+shapiro.test(s3$delta_propionate) #p-value = 0.8305
+
+s4 <- scfa_wide %>%
+  filter(supplement_consumed == "HiMaize") 
+shapiro.test(s4$delta_propionate) #p-value = 0.001526
+
+s5 <- scfa_wide %>%
+  filter(supplement_consumed == "HiMaize+BRMPS") 
+shapiro.test(s5$delta_propionate) #p-value = 0.3026
+
+s6 <- scfa_wide %>%
+  filter(supplement_consumed == "Inulin") 
+shapiro.test(s6$delta_propionate) #p-value = 0.9105
+
+s7 <- scfa_wide %>%
+  filter(supplement_consumed == "LOODAT") 
+shapiro.test(s7$delta_propionate) # p-value = 0.137
+
+s8 <- scfa_wide %>%
+  filter(supplement_consumed == "none") 
+shapiro.test(s8$delta_propionate) # p-value = 0.3468
+
+s9 <- scfa_wide %>%
+  filter(supplement_consumed == "Psyllium") 
+shapiro.test(s9$delta_propionate) # p-value = 0.7713
+
+s10 <- scfa_wide %>%
+  filter(supplement_consumed == "Psyllium+BRMPS") 
+shapiro.test(s10$delta_propionate) # p-value = 0.9725
+
+s11 <- scfa_wide %>%
+  filter(supplement_consumed == "transition_HiMaize") 
+shapiro.test(s11$delta_propionate) # P value = 0.6092
+
+s12 <- scfa_wide %>%
+  filter(supplement_consumed == "BRMPS") 
+shapiro.test(s12$delta_propionate) #P=0.02496
+
+bartlett.test(delta_propionate ~ supplement_consumed, data = scfa_wide)
+
+aov_prop_results <- aov(delta_propionate ~ supplement_consumed, data = scfa_wide)
+summary(aov_prop_results)
+
+
+plot_propionate <- scfa_wide %>%
+ggplot(aes(x = supplement_consumed,
+             y = delta_propionate,
+             color = supplement_consumed)) +
+  geom_hline(yintercept = 0,
+             linetype = "dashed") + 
+  geom_violin() + 
+  geom_jitter() + 
+  xlab(NULL) +
+  ylab("Propionate mmol/kg (wk3 - wk1)") + 
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+
+save_plot(filename = "Lab5/figures/anova_propionate.pdf",
+          plot = plot_acetate,
+          nrow = 1, ncol = 2, 
+          base_aspect_ratio = 1.1)
+# the p value is 0.197, which is large enough and fails to reject the null therefore, there's no overall difference in Acetate Acid production between week 3 and week1 under different supplements.
 ```
 
