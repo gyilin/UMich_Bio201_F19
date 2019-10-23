@@ -255,7 +255,7 @@ group_by(supplement_consumed) %>% summarize(sample_size = n())
 s1_acc <- breath_wkly %>%
 filter (supplement_consumed ==  "Accessible") 
 shapiro.test(s1_acc$h2_mean)
-ggplot(s1, aes(x = h2_mean)) + geom_histogram()+
+ggplot(s1_acc, aes(x = h2_mean)) + geom_histogram()+
 labs(x = "h2_mean_Accesbile",
       y = "Accessible") 
 #p value 0.0937
@@ -263,7 +263,7 @@ labs(x = "h2_mean_Accesbile",
 s1_ara <- breath_wkly %>%
 filter (supplement_consumed ==  "Arabino") 
 shapiro.test(s1_ara$h2_mean)
-ggplot(s1, aes(x = h2_mean )) + geom_histogram()+
+ggplot(s1_ara, aes(x = h2_mean )) + geom_histogram()+
 labs(x = "h2_mean_Arabino",
       y = "count") 
 # p value 0.1695
@@ -271,7 +271,7 @@ labs(x = "h2_mean_Arabino",
 s1_bana <- breath_wkly %>%
 filter (supplement_consumed ==  "Banana") 
 shapiro.test(s1_bana$h2_mean)
-ggplot(s1, aes(x = h2_mean )) + geom_histogram()+
+ggplot(s1_bana, aes(x = h2_mean )) + geom_histogram()+
 labs(x = "h2_mean_banana",
       y = "count") 
 
@@ -279,7 +279,7 @@ labs(x = "h2_mean_banana",
 s1_brmp <- breath_wkly %>%
 filter (supplement_consumed ==  "BRMPS") 
 shapiro.test(s1_brmp$h2_mean)
-ggplot(s1, aes(x = h2_mean )) + geom_histogram()+
+ggplot(s1_brmp, aes(x = h2_mean )) + geom_histogram()+
 labs(x = "h2_mean_brmps",
       y = "count") 
 # p value= 2.823e-12; less than 0.05 so non-norma distribution
@@ -287,7 +287,7 @@ labs(x = "h2_mean_brmps",
 s1_brmp_acc <- breath_wkly %>%
 filter (supplement_consumed ==  "BRMPS+Accessible") 
 shapiro.test(s1_brmp_acc$h2_mean)
-ggplot(s1, aes(x = h2_mean )) + geom_histogram()+
+ggplot(s1_brmp_acc, aes(x = h2_mean )) + geom_histogram()+
 labs(x = "h2_mean_brmps+Accesssible",
       y = "count") 
 # p value = 0.05314
@@ -295,7 +295,7 @@ labs(x = "h2_mean_brmps+Accesssible",
 s1_himai <- breath_wkly %>%
 filter (supplement_consumed ==  "HiMaize") 
 shapiro.test(s1_himai$h2_mean)
-ggplot(s1, aes(x = h2_mean )) + geom_histogram()+
+ggplot(s1_himai, aes(x = h2_mean )) + geom_histogram()+
 labs(x = "h2_mean_HiMaize",
       y = "count") 
 # p value = 9.956e-06 less than 0.05 so non-norma distribution
@@ -303,7 +303,7 @@ labs(x = "h2_mean_HiMaize",
 s1_himai_brmps <- breath_wkly %>%
 filter (supplement_consumed ==  "HiMaize+BRMPS") 
 shapiro.test(s1_himai_brmps$h2_mean)
-ggplot(s1, aes(x = h2_mean )) + geom_histogram()+
+ggplot(s1_himai_brmps, aes(x = h2_mean )) + geom_histogram()+
 labs(x = "h2_mean_HiMaize+BRMPS",
       y = "count") 
 # p value = 0.001864 less than 0.05 so non-norma distribution
@@ -311,7 +311,7 @@ labs(x = "h2_mean_HiMaize+BRMPS",
 s1_inulin <- breath_wkly %>%
 filter (supplement_consumed ==  "Inulin") 
 shapiro.test(s1_inulin$h2_mean)
-ggplot(s1, aes(x = h2_mean )) + geom_histogram()+
+ggplot(s1_inulin, aes(x = h2_mean )) + geom_histogram()+
 labs(x = "h2_mean_Inulin",
       y = "count")  
 # p value = 0.0002929 less than 0.05 so non-norma distribution
@@ -319,7 +319,7 @@ labs(x = "h2_mean_Inulin",
 s1_loodat <- breath_wkly %>%
 filter (supplement_consumed ==  "LOODAT") 
 shapiro.test(s1_loodat$h2_mean)
-ggplot(s1, aes(x = h2_mean )) + geom_histogram()+
+ggplot(s1_loodat, aes(x = h2_mean )) + geom_histogram()+
 labs(x = "h2_mean_LOODAT",
       y = "count") 
 # p value = 7.089e-05 less than 0.05 so non-norma distribution
@@ -327,7 +327,7 @@ labs(x = "h2_mean_LOODAT",
 s1_psyllium <- breath_wkly %>%
 filter (supplement_consumed ==  "Psyllium") 
 shapiro.test(s1_psyllium$h2_mean)
-ggplot(s1, aes(x = h2_mean )) + geom_histogram()+
+ggplot(s1_psyllium, aes(x = h2_mean )) + geom_histogram()+
 labs(x = "h2_mean_psyllium",
       y = "count") 
 # p value = 0.4093
@@ -335,7 +335,7 @@ labs(x = "h2_mean_psyllium",
 s1_psyllium_brmp <- breath_wkly %>%
 filter (supplement_consumed ==  "Psyllium+BRMPS") 
 shapiro.test(s1_psyllium_brmp$h2_mean)
-ggplot(s1, aes(x = h2_mean )) + geom_histogram()+
+ggplot(s1_psyllium_brmp, aes(x = h2_mean )) + geom_histogram()+
 labs(x = "h2_mean_LOODAT",
       y = "count") 
 # p value = 0.472 
@@ -343,7 +343,7 @@ labs(x = "h2_mean_LOODAT",
 s1_transitionhi <- breath_wkly %>%
 filter (supplement_consumed ==  "transition_HiMaize") 
 shapiro.test(s1_transitionhi$h2_mean)
-ggplot(s1, aes(x = h2_mean )) + geom_histogram()+
+ggplot(s1_transitionhi, aes(x = h2_mean )) + geom_histogram()+
 labs(x = "h2_mean_transition_HiMaize",
       y = "count") 
 # p value = 7.102e-07 less than 0.05 so non-norma distribution
@@ -464,6 +464,8 @@ save_plot(filename = "Lab6/figures/correlation_butryate&firmicutes.pdf",
 m63a <- tax_ratio_1 %>%
   lm(butyrate_mean ~ firmicutes_abund, data = .) #test relationship
 summary(m63a) #view results 
+
+#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there could some linear relationship about butryate concentration and Firmicutes abudance; and the adjusted R-squared value is 0.003863, which means the dots are very losely fit into the straignt line (the correlation is not very monotonic).
 ```
 
 Do you draw the same conclusions if you use the butyrate ratio and Firmicutes to Bacteroidetes ratio (f_b_ratio)?
@@ -475,63 +477,178 @@ plot_b_f_ratio<- tax_ratio_1 %>%
   geom_point() + #puts data points to match x and y coordinates
   geom_smooth(method = "lm", #used to create a linear best fit line
               se = FALSE) + #hides confidence interval around line 
-  xlab("mean butyrate (mmol/kg)") + 
+  xlab("butryate ratio") + 
   ylab("butyrate ratio and Firmicutes to Bacteroidetes ratio") 
 
-save_plot(filename = "Lab6/figures/correlation_butryate&butyrate ratio and Firmicutes to Bacteroidetes ratio.pdf", 
+save_plot(filename = "Lab6/figures/correlation_butyrate ratio and Firmicutes to Bacteroidetes ratio.pdf", 
           plot=plot_b_f_ratio,
            nrow = 3, ncol = 6, 
           base_aspect_ratio = 1.1)
 
 # correlation test 
-m63b <- tax_ratio %>%
-  lm()
-
+m63b <- tax_ratio_1 %>%
+  lm(butyrate_ratio ~ f_b_ratio, data = .) #test relationship
 summary(m63b) #view results 
+
+#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between butryate ratio and firmicutes to bacteroidetes ratio; and the adjusted R-squared value is 0.02854 , which means the dots are very losely fit into the straignt line (the correlation is not very monotonic).
+#yes it's the same conclusion as before
 ```
 
 ### Homework 6.4
 Determine if there is a relationship between the propionate concentration and Bacteroidetes abundance. Conduct the statistical test and generate a plot. Save the plot.
 ```{r}
+#plot
+plot_pb<- tax_ratio_1 %>%
+ ggplot(aes(x = propionate_mean,
+             y = bacteroidetes_abund)) + 
+  geom_point() + #puts data points to match x and y coordinates
+  geom_smooth(method = "lm", #used to create a linear best fit line
+              se = FALSE) + #hides confidence interval around line 
+  xlab("mean propionate (mmol/kg)") + 
+  ylab("Bacteroidetes abundance") 
 
+save_plot(filename = "Lab6/figures/correlation_propriate_bacteroidetes.pdf", 
+          plot=plot_pb,
+           nrow = 3, ncol = 6, 
+          base_aspect_ratio = 1.1)
+# correlation test 
+m63c <- tax_ratio_1 %>%
+  lm(propionate_mean ~ bacteroidetes_abund, data = .) #test relationship
+summary(m63c) #view results 
+
+#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.04197, less than 0.8 , which means the dots are very losely fit into the straignt line (the correlation is not very monotonic).
 ```
 
 Do you draw the same conclusions if you use the propionate ratio and Firmicutes to Bacteroidetes ratio?
 ```{r}
+# plot
+plot_p_f_ratio<- tax_ratio_1 %>%
+   ggplot(aes(x = propionate_ratio,
+             y = f_b_ratio)) + 
+  geom_point() + #puts data points to match x and y coordinates
+  geom_smooth(method = "lm", #used to create a linear best fit line
+              se = FALSE) + #hides confidence interval around line 
+  xlab("propionate ratio") + 
+  ylab("butyrate ratio and Firmicutes to Bacteroidetes ratio") 
 
+save_plot(filename = "Lab6/figures/correlation of propionate ratio & Firmicutes to Bacteroidetes ratio.pdf", 
+          plot= plot_p_f_ratio,
+           nrow = 3, ncol = 6, 
+          base_aspect_ratio = 1.1)
+
+# correlation test 
+m63z <- tax_ratio_1 %>%
+  lm(propionate_ratio ~ f_b_ratio, data = .) #test relationship
+summary(m63z) #view results 
 ```
 
 ### Homework 6.5
 Import the curated pH+BSS data you generated during Lab4. Join the pH data frame with the tax_ratio data frame.
 ```{r}
 # import 
-pH_BSS_wkly <- read_delim()
-
+pH_BSS_wkly <- read_delim("~/Documents/UMich_Bio201_F19/Lab4/curated_data/pH_BSS_wkly.txt", 
+                        delim = "\t", col_names = TRUE, trim_ws = TRUE, na = c("NA"))
 # join 
-tax_scfa_pH <- join(tax_ratio, pH_BSS_wkly) %>%
+tax_scfa_pH <- inner_join(tax_ratio_1, pH_BSS_wkly) %>%
   na.omit(semester)
 ```
 
 Determine if there is a relationship between total SCFAs and acetate. Conduct the statistical test and generate a plot. Save the plot to figures folder.
 ```{r}
+#plot
+plot_pb<- tax_scfa_pH %>%
+ ggplot(aes(x = totalscfa_mean,
+             y = acetate_mean)) + 
+  geom_point() + #puts data points to match x and y coordinates
+  geom_smooth(method = "lm", #used to create a linear best fit line
+              se = FALSE) + #hides confidence interval around line 
+  xlab("totalscfa mean (mmol/kg)") + 
+  ylab("mean acetate (mmol/kg)") 
 
+save_plot(filename = "Lab6/figures/correlation_totalscfa and acetate.pdf", 
+          plot=plot_pb,
+           nrow = 3, ncol = 6, 
+          base_aspect_ratio = 1.1)
+# correlation test 
+m63h <- tax_scfa_pH %>%
+  lm(totalscfa_mean ~ acetate_mean, data = .) #test relationship
+summary(m63h) #view results 
+
+#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.87, bigger than 0.8 , which means the dots strongly fit into the straignt line (the correlation is very monotonic).
 ```
 
 Do you draw the same conclusions if you use the total SCFAs and acetate ratio?
 ```{r}
+#plot
+plot_pb<- tax_scfa_pH %>%
+ ggplot(aes(x = totalscfa_mean,
+             y = acetate_ratio)) + 
+  geom_point() + #puts data points to match x and y coordinates
+  geom_smooth(method = "lm", #used to create a linear best fit line
+              se = FALSE) + #hides confidence interval around line 
+  xlab("totalscfa mean (mmol/kg)") + 
+  ylab("acetate ratio") 
 
+save_plot(filename = "Lab6/figures/correlation_totalscfa and acetate ratio.pdf", 
+          plot=plot_pb,
+           nrow = 3, ncol = 6, 
+          base_aspect_ratio = 1.1)
+# correlation test 
+m63h <- tax_scfa_pH %>%
+  lm(totalscfa_mean ~ acetate_ratio, data = .) #test relationship
+summary(m63h) #view results 
+
+#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.0188, smaller than 0.8 , which means the dots loosely fit into the straignt line (the correlation is not very monotonic).
 ```
 
 ### Homework 6.6
 Determine if there is a relationship between total SCFAs and pH. Conduct the statistical test and generate a plot. Save the plot.
 ```{r}
+#plot
+plot_pb<- tax_scfa_pH %>%
+ ggplot(aes(x = totalscfa_mean,
+             y = wkly_avg_ph)) + 
+  geom_point() + #puts data points to match x and y coordinates
+  geom_smooth(method = "lm", #used to create a linear best fit line
+              se = FALSE) + #hides confidence interval around line 
+  xlab("totalscfa mean (mmol/kg)") + 
+  ylab("weekly ph") 
 
+save_plot(filename = "Lab6/figures/correlation_totalscfa and ph.pdf",
+          plot=plot_pb,
+           nrow = 3, ncol = 6, 
+          base_aspect_ratio = 1.1)
+# correlation test 
+m63h <- tax_scfa_pH %>%
+  lm(totalscfa_mean ~ wkly_avg_ph, data = .) #test relationship
+summary(m63h) #view results 
+
+#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.09942, smaller than 0.8 , which means the dots loosely fit into the straignt line (the correlation is not very monotonic).
 ```
 
 ### Homework 6.7
 Determine if there is a relationship between butyrate and pH. Conduct the statistical test and generate a plot. Save the plot.
 ```{r}
+#plot
+plot_pb<- tax_scfa_pH %>%
+ ggplot(aes(x = butyrate_mean,
+             y = wkly_avg_ph)) + 
+  geom_point() + #puts data points to match x and y coordinates
+  geom_smooth(method = "lm", #used to create a linear best fit line
+              se = FALSE) + #hides confidence interval around line 
+  xlab("mean butyrate (mmol/kg)") + 
+  ylab("weekly ph") 
 
+save_plot(filename = "Lab6/figures/correlation_butryate and ph.pdf",
+          plot=plot_pb,
+           nrow = 3, ncol = 6, 
+          base_aspect_ratio = 1.1)
+# correlation test 
+m63h <- tax_scfa_pH %>%
+  lm(butyrate_mean ~ wkly_avg_ph, data = .) #test relationship
+summary(m63h) #view results 
+
+#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.05209, smaller than 0.8 , which means the dots loosely fit into the straignt line (the correlation is not very monotonic).
 ```
 
 ### Homework 6.8
@@ -543,9 +660,20 @@ Save each data frame generated today:
 * tax_scfa_pH
 
 ```{r}
-write_delim(your_data_frame, 
-            path="Lab6/curated_data/your_data_frame.txt",
+write_delim(taxa_cat_curated, 
+            path="Lab6/curated_data/taxa_cat_curated.txt",
             delim = "\t", quote = FALSE, col_names = TRUE)
+write_delim(scfa_ratio, 
+            path="Lab6/curated_data/scfa_ratio.txt",
+            delim = "\t", quote = FALSE, col_names = TRUE)
+write_delim(tax_scfa, 
+            path="Lab6/curated_data/tax_scfa.txt",
+            delim = "\t", quote = FALSE, col_names = TRUE)
+write_delim(tax_scfa_pH, 
+            path="Lab6/curated_data/tax_scfa_pH.txt",
+            delim = "\t", quote = FALSE, col_names = TRUE)
+
+
 ```
 
 -----
