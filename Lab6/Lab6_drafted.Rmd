@@ -1,6 +1,6 @@
 ---
 title: "Lab 6"
-author: "Kristi Gdanetz MacCready"
+author: "Yilin Guan"
 date: "10/21/2019"
 output: html_document
 ---
@@ -437,9 +437,11 @@ group_by(participant_id, study_week) %>%
 summarize(bacteroidetes_abund = sum(relative_abundance))
 
 # join subsetted data frames
-tax_ratio <- inner_join(Fr, Br) %>%
+tax_ratio <- inner_join(Fr, Br, 
+                 by = c("participant_id", "study_week")) %>%
   mutate(f_b_ratio = (firmicutes_abund / bacteroidetes_abund)) #calculate ratios
-  tax_ratio_1 <- inner_join(tax_ratio, scfa_ratio) #join with scfa_ratio data frame
+  tax_ratio_1 <- inner_join(tax_ratio, scfa_ratio,
+                            by= c("participant_id", "study_week")) #join with scfa_ratio data frame
 ```
 
 ### Homework 6.3
@@ -465,7 +467,7 @@ m63a <- tax_ratio_1 %>%
   lm(butyrate_mean ~ firmicutes_abund, data = .) #test relationship
 summary(m63a) #view results 
 
-#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there could some linear relationship about butryate concentration and Firmicutes abudance; and the adjusted R-squared value is 0.003863, which means the dots are very losely fit into the straignt line (the correlation is not very monotonic).
+#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there could some linear relationship about butryate concentration and Firmicutes abudance; and the adjusted R-squared value is 0.003863, which is way smaller than 0.8 and means there is no linear relationship found.
 ```
 
 Do you draw the same conclusions if you use the butyrate ratio and Firmicutes to Bacteroidetes ratio (f_b_ratio)?
@@ -490,7 +492,7 @@ m63b <- tax_ratio_1 %>%
   lm(butyrate_ratio ~ f_b_ratio, data = .) #test relationship
 summary(m63b) #view results 
 
-#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between butryate ratio and firmicutes to bacteroidetes ratio; and the adjusted R-squared value is 0.02854 , which means the dots are very losely fit into the straignt line (the correlation is not very monotonic).
+#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between butryate ratio and firmicutes to bacteroidetes ratio; and the adjusted R-squared value is 0.02854 , which is way smaller than 0.8 and means there is no linear relationship found 
 #yes it's the same conclusion as before
 ```
 
@@ -516,7 +518,7 @@ m63c <- tax_ratio_1 %>%
   lm(propionate_mean ~ bacteroidetes_abund, data = .) #test relationship
 summary(m63c) #view results 
 
-#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.04197, less than 0.8 , which means the dots are very losely fit into the straignt line (the correlation is not very monotonic).
+#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.04197, which is way smaller than 0.8 and means there is no linear relationship found 
 ```
 
 Do you draw the same conclusions if you use the propionate ratio and Firmicutes to Bacteroidetes ratio?
@@ -540,6 +542,8 @@ save_plot(filename = "Lab6/figures/correlation of propionate ratio & Firmicutes 
 m63z <- tax_ratio_1 %>%
   lm(propionate_ratio ~ f_b_ratio, data = .) #test relationship
 summary(m63z) #view results 
+
+#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.02, which is way smaller than 0.8 and means there is no linear relationship found.
 ```
 
 ### Homework 6.5
@@ -549,8 +553,9 @@ Import the curated pH+BSS data you generated during Lab4. Join the pH data frame
 pH_BSS_wkly <- read_delim("~/Documents/UMich_Bio201_F19/Lab4/curated_data/pH_BSS_wkly.txt", 
                         delim = "\t", col_names = TRUE, trim_ws = TRUE, na = c("NA"))
 # join 
-tax_scfa_pH <- inner_join(tax_ratio_1, pH_BSS_wkly) %>%
-  na.omit(semester)
+tax_scfa_pH <- inner_join(tax_ratio_1, pH_BSS_wkly,
+                 by = c("participant_id", "study_week")) 
+
 ```
 
 Determine if there is a relationship between total SCFAs and acetate. Conduct the statistical test and generate a plot. Save the plot to figures folder.
@@ -574,7 +579,7 @@ m63h <- tax_scfa_pH %>%
   lm(totalscfa_mean ~ acetate_mean, data = .) #test relationship
 summary(m63h) #view results 
 
-#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.87, bigger than 0.8 , which means the dots strongly fit into the straignt line (the correlation is very monotonic).
+#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.883, bigger than 0.8 , which means the dots strongly fit into the straignt line (the correlation is  monotonic and there is linear relationship).
 ```
 
 Do you draw the same conclusions if you use the total SCFAs and acetate ratio?
@@ -598,7 +603,7 @@ m63h <- tax_scfa_pH %>%
   lm(totalscfa_mean ~ acetate_ratio, data = .) #test relationship
 summary(m63h) #view results 
 
-#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.0188, smaller than 0.8 , which means the dots loosely fit into the straignt line (the correlation is not very monotonic).
+#the p value is  0.00025, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.001316, which is way smaller than 0.8 and means there is no linear relationship found 
 ```
 
 ### Homework 6.6
@@ -623,7 +628,7 @@ m63h <- tax_scfa_pH %>%
   lm(totalscfa_mean ~ wkly_avg_ph, data = .) #test relationship
 summary(m63h) #view results 
 
-#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.09942, smaller than 0.8 , which means the dots loosely fit into the straignt line (the correlation is not very monotonic).
+#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.07148, which is way smaller to 0.8 and means there is no linear relationship found 
 ```
 
 ### Homework 6.7
@@ -648,7 +653,7 @@ m63h <- tax_scfa_pH %>%
   lm(butyrate_mean ~ wkly_avg_ph, data = .) #test relationship
 summary(m63h) #view results 
 
-#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.05209, smaller than 0.8 , which means the dots loosely fit into the straignt line (the correlation is not very monotonic).
+#the p value is  < 2.2e-16, which means we can use the linear model to interpreate the correlation that there is some linear reationship between the propionate concentration and Bacteroidetes abundance; and the adjusted R-squared value is 0.05209, which is way smaller than 0.8 and means there is no linear relationship found 
 ```
 
 ### Homework 6.8
