@@ -1,0 +1,267 @@
+---
+title: "Practical Fall 2019"
+author: "Yilin Guan"
+date: "10/28/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "~/Documents/UMich_Bio201_F19/")
+```
+
+As with each lab, add "completed" to the Rmd filename; update the name in the author line above; update the location of the working directory as necessary. 
+
+# Load packages
+```{r Load packages, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE, results='hide'}
+library(tidyverse)
+library(readxl)
+library(broom)
+library(cowplot)
+set.seed(7)
+```
+
+# Part 1 - concepts 
+Type the answers to questions 1-5 in the space below. 
+
+### Question 1
+
+Given vector v1 below, will it be read as character or numeric? Why does this happen? [1 point]
+```{r}
+v1 <- c("one", "2", "three", "4") 
+```
+
+<type answer here> 
+with the "", these 3 vectors will be considered as characters 
+### Question 2
+
+dataframe1 has 323 rows and dataframe2 has 345 rows. After an inner join the resulting data fame has 312 rows. Why does the result have fewer rows? [1 point]
+<type answer here> 
+The two data frames contain NAs that create mis-matches of the 2 data frames. So when we do the inner_join, this process will elimitate those unmatches NA, resulting fewer rows avaible for further analysis. 
+
+### Question 3
+
+What are the three assumptions for a t-test? Explain what to do if the variance assumption is violated. Explain what to do if the normality assumption is violated. [3 points]
+
+<type answer here> 
+The three assumptions are: Normality test, Sample size test and variance test. 
+If variance is violated: then we should specify in the t- test that var.equal = FALSE
+If the normality test is violated, we should use non-parametric Wilcoxon test: wilcox.test 
+### Question 4
+
+You have a data frame (called butyrate_df) with the columns: "Participant_ID", "Study_week", "Semester", "Supplement_consumed", "Avg_butyrate". If this data frame is piped to each of the functions below, evaluate if the description of the results is true or false. [3 points]
+```{r eval=FALSE, include=FALSE}
+butyrate_df %>%
+  filter(Semester == "Fall2019")
+# Result1 = keeps only data from Fall 2019 semester
+
+butyrate_df %>%
+  filter(Avg_butyrate <= 47.0)
+# Result2 = keeps only values equal to 47 mmol/kg 
+
+butyrate_df %>%
+  group_by(Semester) %>%
+  summarize(New_column = median(Avg_butyrate))
+# Result3 = new_column contains the median of each participant 
+```
+
+1. yes, through filtering fall 2019, the columns names remain the same, the total value shown here will only include the data collected from fall 2019.
+2. wrong, the result will only keep values less than or equal to 47 mmol/kg
+3. Wrong, the new_column only contains the median of average butryate in each semseter.
+### Question 5
+
+something about NAs
+
+The data frame (called breath_df) has the columns: "Participant_ID", "Study_week", "Semester", "Supplement_consumed", "Methane", "Hydrogen", "Carbon_dioxide". This data frame is used for the code below, explain what will happen to any NAs in each of the shown calculations, and how the NAs will effect the underlying data. [2 points]
+```{r eval=FALSE, include=FALSE}
+# Option 1
+breath_df %>%
+  filter(!is.na(Methane)) %>% 
+  group_by(Participant_ID, Study_week) %>%
+  summarize(Avg_methane = mean(Methane))
+
+# Option 2
+breath_df %>%
+  group_by(Participant_ID, Study_week) %>%
+  summarize(Avg_methane = mean(Methane, na.rm = TRUE))
+```
+
+<type answer here>
+both option remove NAs in the data set of methane and calculation is normal. They are just different ways of removing NAs in the code.
+option 1: the code first exclude data with NA in the methane and then summarize the data, so the Nas are removed in the final mean methane part and there is no influence on the data.
+Option 2: it reaches the same result that shows normal mean value of methane without nas in the methane data that disrupts the caculation. 
+# Part 2 - tidy data 
+
+### Question 6
+
+Find the data frame matching your unique name in the GitHub repository. Find the breath gas and taxa abundance data frames. Download and import all into RStudio and use these data frames to complete the rest of the practical. Name the dataframe to match your uniqname, name the breath gas data frame "breath", name the taxa abundance data frame "taxa". [1 point]
+```{r}
+# data import code 
+breath <- read_delim(file = "Practial/Raw_data/breath.txt",
+                        delim = "\t", col_names = TRUE, trim_ws = TRUE, 
+                        na = c("", "NA")) 
+taxa <- read_delim(file = "Practial/Raw_data/taxa.txt",
+                        delim = "\t", col_names = TRUE, trim_ws = TRUE, 
+                        na = c("", "NA")) 
+gyilin <- read_delim(file = "Practial/Raw_data/gyilin.txt",
+                        delim = "\t", col_names = TRUE, trim_ws = TRUE, 
+                        na = c("", "NA")) 
+```
+
+Update column names in all files match the course conventions. [1 point]
+```{r}
+breath <- breath %>%
+  rename_all(tolower)
+taxa <- taxa %>%
+  rename_all(tolower)
+gyilin <- gyilin %>%
+  rename_all(tolower)
+```
+
+View the supplement types in your semester. Are they all entered in the same style? If not update them to match. [1 point]
+```{r}
+gyilin[["supplement_consumed"]] <- recode(.x=gyilin[["supplement_consumed"]], "Psyllium&BRMPS"="Psyllium+BRMPS")
+count(gyilin, supplement_consumed)
+```
+
+### Question 7
+
+What are the dimensions of each data frame? Write the results as a comment after the function. [1 point]
+```{r}
+dim(gyilin) #348 rows and 9 columns
+dim(taxa) # 46881 rows and 6 columns
+dim(breath)# 2668 rows and 5 columns
+```
+
+Select a join that will drop as few data points as possible. Join the data frame containing the participant data with the breath gas data. Name this "joined_df". [1 point]
+```{r}
+joined_df <- full_join(gyilin, breath,
+                    by = c("semester","participant_id","study_week"))
+```
+
+What are the dimensions of the joined data frame? Write the results as a comment after the function. [1 point]
+```{r}
+dim(joined_df) #3132 rows and 11 columns
+```
+
+### Question 8
+
+Calculate the total SCFAs. [1 point]
+```{r}
+joined_df <- joined_df %>%
+  mutate(total_scfa_mmol_kg = acetate_mmol_kg + butyrate_mmol_kg + propionate_mmol_kg)
+```
+
+Calculate the weekly mean of each SCFA of each participant. Calculate the weekly mean methane and hydrogen levels of each participant. [1 point]
+```{r}
+scfa_wkly_mean_but <- joined_df %>%
+  select(-starts_with("delta_")) %>%
+  gather(key = SCFA_wk, value = SCFA_concentration,
+         ace_wk1, ace_wk3, but_wk1, but_wk3, pro_wk1, pro_wk3, totl_wk1, totl_wk3)
+
+  group_by(participant_id, study_week, supplement_consumed) %>%
+  summarize(mean_acetate = mean(acetate_mmol_kg, na.rm = TRUE), 
+            mean_butyrate = mean(butyrate_mmol_kg, na.rm = TRUE), 
+            mean_propionate = mean(propionate_mmol_kg, na.rm = TRUE),
+            mean_ch4 = mean(ch4,na.rm = TRUE),
+            mean_h2 = mean(h2,na.rm = TRUE))
+joined_df_mean <- inner_join(scfa_wkly, joined_df,
+                             c("participant_id", "study_week", "supplement_consumed"))
+```
+
+What are the dimensions of the data frame with the avearges? Write the results as a comment after the function.
+```{r}
+dim(joined_df_mean) #3132 rows and 17 columns 
+```
+
+Join this data frame with the one called "taxa". Name the new data frame "all_data". What are the dimensions of this new data frame? [1 point]
+```{r}
+all_data <- full_join(joined_df_mean, taxa,
+                    by = c("participant_id","study_week"))
+```
+
+Save all data frames generated to your GitHub page. [1 point]
+```{r}
+write_delim(all_data, path = "Practial/curated_data/all_data.txt", delim = "\t") 
+write_delim(joined_df, path = "Practial/curated_data/joined_df.txt", delim = "\t") 
+write_delim(joined_df_mean, path = "Practial/curated_data/joined_df_mean.txt", delim = "\t") 
+```
+
+# Part 3 - statistics & graphics 
+
+Update all axes labels and figure titles so they are informative and easy to read. Upload final plots to GitHub. When specified, conduct the appropriate tests, and write the statistic (p, F, R value) as a comment. 
+
+### Question 9
+
+If you have more than one type of supplement consumed in your semester, filter for one type to answer Question 9. Plot each SCFA with the study week (weeks 1 and 3 only) on the x-axis. Make each study week a different color. Hint: you may have to use facets, or create individual plots and combine them into a multi-panelled figure. [3 points]
+```{r}
+
+butyrate_long %>%
+  filter(study_week == "week1" | study_week == "week3", 
+         supplement_consumed == "BRMPS") %>% 
+  ggplot(aes(x = study_week, 
+             y = butyrate_mean, 
+             color = study_week), 
+         frequency) + 
+  geom_violin() + # geom_jitter() + 
+  facet_grid(~frequency) + 
+  xlab(NULL) + 
+  ylab("Butyrate (mmol/kg)") + 
+  theme(legend.position = "none")
+```
+
+Based on the data presented in the plot you generated above, identify which statistical test you would need to determine if there was a change in SCFA concentration between weeks 1 and 3 of the study. Check the assumptions appropriate for the test. [3 points]
+```{r}
+# assumptions
+
+# test 
+
+# result?
+```
+
+Based on the results of the test, conclude if there was a difference in SCFAs between weeks. 
+
+<type answer here> 
+
+### Question 10
+
+Is there a correlation between the abundace of hydrogen generators and breath hydrogen? Create a plot that shows the relationship and conduct the appropriate statistical test(s). [2 points]
+```{r}
+# plot
+
+# test
+
+# result?
+```
+
+What can you conclude from these results?
+
+<type answer here> 
+
+Is there a correlation between the abundace of hydrogen consumers and breath methane? Create a plot that shows the relationship and conduct the appropriate statistical test(s). [2 points]
+```{r}
+# plot
+
+# test
+
+# result?
+```
+
+What can you conclude from these results?
+
+<type answer here> 
+
+### Extra credit:
+
+Is the abundace of hydrogen producers and consumers related? Create a plot, check assumptions, conduct the appropriate statistical test(s), and interpret the results. [1 point]
+```{r}
+# plot
+
+# test(s)
+```
+
+<type answer here> 
+
+
+-----
+end
