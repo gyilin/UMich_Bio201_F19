@@ -113,7 +113,9 @@ Update column names in all files match the course conventions. [1 point]
 breath <- breath %>%
   rename_all(tolower)
 taxa <- taxa %>%
-  rename_all(tolower)
+  rename_all(tolower)%>%
+  rename(relative_abundance = fract)
+
 gyilin <- gyilin %>%
   rename_all(tolower)
 ```
@@ -154,37 +156,33 @@ joined_df <- joined_df %>%
 
 Calculate the weekly mean of each SCFA of each participant. Calculate the weekly mean methane and hydrogen levels of each participant. [1 point]
 ```{r}
-scfa_wkly_mean_but <- joined_df %>%
-  select(-starts_with("delta_")) %>%
-  gather(key = SCFA_wk, value = SCFA_concentration,
-         ace_wk1, ace_wk3, but_wk1, but_wk3, pro_wk1, pro_wk3, totl_wk1, totl_wk3)
-
-  group_by(participant_id, study_week, supplement_consumed) %>%
-  summarize(mean_acetate = mean(acetate_mmol_kg, na.rm = TRUE), 
-            mean_butyrate = mean(butyrate_mmol_kg, na.rm = TRUE), 
-            mean_propionate = mean(propionate_mmol_kg, na.rm = TRUE),
-            mean_ch4 = mean(ch4,na.rm = TRUE),
-            mean_h2 = mean(h2,na.rm = TRUE))
-joined_df_mean <- inner_join(scfa_wkly, joined_df,
-                             c("participant_id", "study_week", "supplement_consumed"))
+mean_all<- joined_df %>%
+  filter(!is.na(butyrate_mmol_kg), !is.na(acetate_mmol_kg), !is.na(propionate_mmol_kg), !is.na(ch4), !is.na(h2)) %>%
+  group_by(participant_id,semester, study_week, supplement_consumed) %>%
+  summarize(mean_butyrate = mean(butyrate_mmol_kg), 
+            mean_ace = mean(acetate_mmol_kg),
+            mean_propionate = mean(propionate_mmol_kg),
+           mean_ch4 = mean(ch4),
+           mean_h2 = mean(h2))
 ```
 
 What are the dimensions of the data frame with the avearges? Write the results as a comment after the function.
 ```{r}
-dim(joined_df_mean) #3132 rows and 17 columns 
+dim(mean_all) #77 rows and 8 columns 
 ```
 
 Join this data frame with the one called "taxa". Name the new data frame "all_data". What are the dimensions of this new data frame? [1 point]
 ```{r}
-all_data <- full_join(joined_df_mean, taxa,
+all_data <- inner_join(mean_all, taxa,
                     by = c("participant_id","study_week"))
+dim(all_data) #3104 rows and 13 columns
 ```
 
 Save all data frames generated to your GitHub page. [1 point]
 ```{r}
 write_delim(all_data, path = "Practial/curated_data/all_data.txt", delim = "\t") 
 write_delim(joined_df, path = "Practial/curated_data/joined_df.txt", delim = "\t") 
-write_delim(joined_df_mean, path = "Practial/curated_data/joined_df_mean.txt", delim = "\t") 
+write_delim(mean_all, path = "Practial/curated_data/joined_df_mean.txt", delim = "\t") 
 ```
 
 # Part 3 - statistics & graphics 
@@ -195,73 +193,170 @@ Update all axes labels and figure titles so they are informative and easy to rea
 
 If you have more than one type of supplement consumed in your semester, filter for one type to answer Question 9. Plot each SCFA with the study week (weeks 1 and 3 only) on the x-axis. Make each study week a different color. Hint: you may have to use facets, or create individual plots and combine them into a multi-panelled figure. [3 points]
 ```{r}
+scfa_long_mean <- mean_all %>%
+  gather(key = scfa, value = meanwkly,mean_butyrate: mean_propionate )
 
-butyrate_long %>%
-  filter(study_week == "week1" | study_week == "week3", 
+plot_butmean<- scfa_long_mean %>%
+  filter(study_week == "week1" | study_week == "week3",
          supplement_consumed == "BRMPS") %>% 
-  ggplot(aes(x = study_week, 
-             y = butyrate_mean, 
-             color = study_week), 
-         frequency) + 
-  geom_violin() + # geom_jitter() + 
-  facet_grid(~frequency) + 
-  xlab(NULL) + 
-  ylab("Butyrate (mmol/kg)") + 
-  theme(legend.position = "none")
+  ggplot(aes(x = semester, 
+             y = meanwkly, scfa)) +
+  geom_point(aes(color = study_week))+
+    facet_grid(scfa~., scales = "free") + 
+    labs(title = "SCFA concentration under the supplement of BRMPS",
+         x = "study semester",
+         y = "SCFA concentration(mmol/kg)")
+
+plot_butmean
 ```
 
 Based on the data presented in the plot you generated above, identify which statistical test you would need to determine if there was a change in SCFA concentration between weeks 1 and 3 of the study. Check the assumptions appropriate for the test. [3 points]
 ```{r}
-# assumptions
+# assumptions 
+# use a paired-t test to determine if there was a change.
+ scfa_long_mean %>%
+  filter(study_week == "week1" | study_week == "week3", 
+         supplement_consumed == "BRMPS") %>%
+  group_by(study_week) %>% 
+  summarise(sample_size = n())
 
+scfa_wk1 <- scfa_long_mean %>%
+  filter(study_week == "week1", 
+         supplement_consumed == "BRMPS") 
+shapiro.test(scfa_wk1$meanwkly) 
+ggplot(scfa_wk1, aes(x = meanwkly)) + geom_histogram()
+
+scfa_wk3 <- scfa_long_mean %>%
+  filter(study_week == "week3", 
+         supplement_consumed == "BRMPS") 
+shapiro.test(scfa_wk3$meanwkly) 
+ggplot(scfa_wk3, aes(x = meanwkly)) + geom_histogram()
+
+var.test(x = scfa_wk1$meanwkly, 
+         y = scfa_wk3$meanwkly, 
+         alternative = "two.sided")
+
+# assumptions of sample size: 39  mets the requirement; regarding the normality assumption both the p value which is very samll for both week 1 and week 3 groups.  The Histogram  shows high skwedness for week 1 and week 2 which also shows some bimodal patterns. Therefore, there is no normal distrubution for the data here. Finally, the variance test shows p value = 0.48 which is high to support the null that the variance is equal. Since  we don't have normal-distributed data, we have to use non-parametric test. 
 # test 
+df_brmps <- scfa_long_mean %>% 
+  filter(study_week == "week1" | study_week == "week3",
+         supplement_consumed == "BRMPS") %>%
+  select(participant_id, study_week, scfa, meanwkly, semester) %>%
+  spread(study_week, meanwkly) %>%
+  na.omit()
 
+# non-normal, equal variances, use wilcoxon test 
+wilcox.test(x = df_brmps$week1, 
+            y = df_brmps$week3, 
+            alternative = "less", paired = TRUE, var.equal = TRUE)
 # result?
+# the p value for the wilcoxon is 0.1788, which is higher than 0.05 and doesn't rejects the null that the scfa concentration for week 1 and week 3 are the same. 
 ```
 
 Based on the results of the test, conclude if there was a difference in SCFAs between weeks. 
 
-<type answer here> 
-
+Based on the test which gives the value of 0.1788. This p value is higher than 0.05 and fails to rejects the null. The scfa concentration for week 1 and week 3 are the same. 
 ### Question 10
 
 Is there a correlation between the abundace of hydrogen generators and breath hydrogen? Create a plot that shows the relationship and conduct the appropriate statistical test(s). [2 points]
 ```{r}
 # plot
+plot_hydrogen<- all_data %>%
+   filter(category == "hydrogen_gen") %>%
+ ggplot(aes(x = mean_h2,
+             y = relative_abundance)) + 
+  geom_point() + #puts data points to match x and y coordinates
+  geom_smooth(method = "lm", #used to create a linear best fit line
+              se = FALSE) + #hides confidence interval around line 
+  xlab("mean hydrogen") + 
+  ylab("hydrogen generator abundance") 
 
+save_plot(filename = "Practial/figures/correlation_mean hydrogen&hydrogen generators.pdf", 
+          plot=plot_hydrogen,
+           nrow = 3, ncol = 6, 
+          base_aspect_ratio = 1.1)
 # test
+m_h2 <- all_data %>%
+  filter(category == "hydrogen_gen") %>%
+  lm(mean_h2 ~ relative_abundance, data = .) #test relationship
+summary(m_h2) #view results 
 
 # result?
+#The p value is p-value: 0.2483, which is very large to yield a significant result and thus this means the linear model is not a good fit here. So we don't have linear relaitonship here. 
 ```
 
 What can you conclude from these results?
-
-<type answer here> 
-
+we don't know if there is linear correlation between hydrogen generators and breath hydrogen based on the results given above since linear model isn't appropriate analysis here. 
 Is there a correlation between the abundace of hydrogen consumers and breath methane? Create a plot that shows the relationship and conduct the appropriate statistical test(s). [2 points]
 ```{r}
 # plot
+plot_meth<- all_data %>%
+   filter(category == "hydrogen_consumers") %>%
+ ggplot(aes(x = mean_ch4,
+             y = relative_abundance)) + 
+  geom_point() + #puts data points to match x and y coordinates
+  geom_smooth(method = "lm", #used to create a linear best fit line
+              se = FALSE) + #hides confidence interval around line 
+  xlab("mean methane") + 
+  ylab("hydrogen consumers abundance") 
 
+save_plot(filename = "Practial/figures/correlation_mean methane&hydrogen generators.pdf", 
+          plot=plot_meth,
+           nrow = 3, ncol = 6, 
+          base_aspect_ratio = 1.1)
 # test
+m_ch4 <- all_data %>%
+  filter(category == "hydrogen_consumers") %>%
+  lm(mean_ch4 ~ relative_abundance, data = .) #test relationship
+summary(m_ch4) #view results 
 
 # result?
+#The p value is p-value:  5.066e-06 , which is small enough to yield a significant result and thus this means the linear model is a good fit here. The adjusted R value is 0.283, still far from 0.9, which tells us there is no linear relationship here. 
 ```
 
 What can you conclude from these results?
-
-<type answer here> 
-
+we don't have linear correlation between hydrogen consumers and breath methane based on the results given above.
 ### Extra credit:
 
 Is the abundace of hydrogen producers and consumers related? Create a plot, check assumptions, conduct the appropriate statistical test(s), and interpret the results. [1 point]
 ```{r}
 # plot
+df_consumer <- all_data %>%
+filter (category == "hydrogen_consumers") %>%
+group_by(participant_id, study_week) %>%
+summarize(h2_cons_abund = sum(relative_abundance))
+
+df_prod <- all_data %>%
+filter (category == "hydrogen_gen") %>%
+group_by(participant_id, study_week) %>%
+summarize(h2_gen_abund = sum(relative_abundance))
+
+
+df_total <- inner_join(df_consumer, df_prod, 
+                 by = c("participant_id", "study_week"))
+
+  plot_cons_prod<-df_total %>%
+ ggplot(aes(x = h2_cons_abund,
+             y = h2_gen_abund)) + 
+  geom_point() + #puts data points to match x and y coordinates
+  geom_smooth(method = "lm", #used to create a linear best fit line
+              se = FALSE) + #hides confidence interval around line 
+  xlab("relative abundance of hydrogen consumer") + 
+  ylab("relative abundance of hydrogen producer") 
+
+save_plot(filename = "Practial/figures/correlation between hydrogen consumer hydrogen generators.pdf", 
+          plot=plot_cons_prod,
+           nrow = 3, ncol = 6, 
+          base_aspect_ratio = 1.1)
 
 # test(s)
+m_cons_pro <- df_total %>%
+  lm(h2_cons_abund ~ h2_gen_abund, data = .) #test relationship
+summary(m_cons_pro) #view results 
+#P value is 0.4659, which is large and thus fails to reject the null hypothesis.
 ```
 
 <type answer here> 
-
-
+Since the p value is large enough, it means linear model is not a good fit for the data. The abundace of hydrogen producers and consumers are not related based on linear model
 -----
 end
