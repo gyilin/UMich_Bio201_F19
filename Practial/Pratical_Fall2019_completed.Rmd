@@ -481,8 +481,31 @@ This p-value is high (p-value = 2.976e-16), so we do have significance.There is 
 Is the abundace of hydrogen producers and consumers related? Create a plot, check assumptions, conduct the appropriate statistical test(s), and interpret the results. [1 point]
 ```{r}
 # plot
+h2_abund <- breath_taxa %>% 
+  filter(category == "hydrogen_gen" | category == "hydrogen_consumers",
+          study_week == "week3") %>% 
+  spread(key = category, value = fract) 
 
-# test(s)
+plot_abund <- h2_abund %>% 
+  ggplot(aes(x = hydrogen_gen,
+             y = hydrogen_consumers)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", 
+              se = FALSE) + 
+  xlab("Hydrogen producers abundance") + 
+  ylab("Hydrogen consumer abundance") 
+
+plot_abund
+
+save_plot(filename = "figures/plot_abund.pdf", plot = plot_abund)
+
+# test 
+mabund <- h2_abund %>%
+  filter(study_week == "week3") %>% 
+  na.omit(hydrogen_consumers, hydrogen_gen) %>% 
+  lm(hydrogen_gen ~ hydrogen_consumers, data = .) 
+summary(mabund) 
+
 ```
 
 <type answer here> 
