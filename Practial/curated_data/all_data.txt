@@ -1,0 +1,82 @@
+study_week	participant_id	supplement_consumed	mean_butyrate	mean_acetate	mean_propionate	mean_ch4	mean_h2	fract	taxa_name	category	phylum
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.039515615041427664	Faecalibacterium prausnitzii	butyrogen_focused	Firmicutes
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.004218640929922001	Roseburia intestinalis	butyrogen_focused	Firmicutes
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.00206379556283954	Anaerostipes hadrus	butyrogen_focused	Firmicutes
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.039515615041427664	Faecalibacterium prausnitzii	butyrogen_flint	Firmicutes
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.035752223132720265	Alistipes putredinis	butyrogen_flint	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.01663176424170688	Odoribacter splanchnicus	butyrogen_flint	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.013353971288961729	Coprococcus eutactus	butyrogen_flint	Firmicutes
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.0018209960848584168	[Eubacterium] hallii	butyrogen_flint	Firmicutes
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.004036541321436159	Eubacterium ventriosum	butyrogen_flint	Firmicutes
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.002154845367082461	Coprococcus catus	butyrogen_flint	Firmicutes
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.004218640929922001	Roseburia intestinalis	butyrogen_flint	Firmicutes
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.004613190081641324	Roseburia inulinivorans	butyrogen_flint	Firmicutes
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.01851346019606058	Ruminococcus bromii	RS_degraders	Firmicutes
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.016176515220492276	Bacteroides <genus>	propionate_gen	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.0036723421044644756	Bacteroides fragilis	propionate_gen	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.011290175726122191	Bacteroides uniformis	propionate_gen	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.0906856050259492	Bacteroides vulgatus	propionate_gen	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.035752223132720265	Alistipes putredinis	propionate_gen	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.01663176424170688	Odoribacter splanchnicus	propionate_gen	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.01678351391544508	Bacteroides caccae	propionate_gen	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.3293574918813925	Prevotella copri	propionate_gen	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	5.462988254575252e-4	Bacteroidales	propionate_gen	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.00716258460044311	Alistipes	propionate_gen	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.008528331664086923	Parabacteroides goldsteinii	propionate_gen	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.020304106346171358	Bacteroides dorei	propionate_gen	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.0030653434095116697	Butyricimonas	propionate_gen	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.0034902424959786338	Alistipes indistinctus	propionate_gen	Bacteroidetes <phylum>
+week1	U011	BRMPS	16.4309114345	28.640837755	6.307956086	0.5	3	0.004218640929922001	Roseburia intestinalis	hydrogen_gen	Firmicutes
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.05051951939111473	Faecalibacterium prausnitzii	butyrogen_focused	Firmicutes
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	3.8482917860349766e-4	Roseburia hominis	butyrogen_focused	Firmicutes
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.005494505494505495	Anaerostipes hadrus	butyrogen_focused	Firmicutes
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.05051951939111473	Faecalibacterium prausnitzii	butyrogen_flint	Firmicutes
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.029054602984564075	Alistipes putredinis	butyrogen_flint	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.019027664942061828	Odoribacter splanchnicus	butyrogen_flint	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.0011331081369991875	Coprococcus eutactus	butyrogen_flint	Firmicutes
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.002843460041903621	[Eubacterium] hallii	butyrogen_flint	Firmicutes
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	6.841407619617736e-4	Coprococcus catus	butyrogen_flint	Firmicutes
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	3.8482917860349766e-4	Roseburia hominis	butyrogen_flint	Firmicutes
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.01721041604310087	Roseburia inulinivorans	butyrogen_flint	Firmicutes
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.007290374994655149	Bifidobacterium	RS_degraders	Actinobacteria <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.010026938042502244	Bacteroides <genus>	propionate_gen	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.033800829520673883	Bacteroides uniformis	propionate_gen	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.22433403172702784	Bacteroides vulgatus	propionate_gen	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.0472912301706076	Bacteroides eggerthii	propionate_gen	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.0468636421943815	Bacteroides ovatus	propionate_gen	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.029054602984564075	Alistipes putredinis	propionate_gen	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.019027664942061828	Odoribacter splanchnicus	propionate_gen	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.06349681446957711	Parabacteroides merdae	propionate_gen	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.05783127378458117	Bacteroides caccae	propionate_gen	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.005302090905203745	Alistipes	propionate_gen	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.011844186941463206	Alistipes shahii	propionate_gen	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.01415316201308419	Bacteroides dorei	propionate_gen	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.016718689870440843	Barnesiella	propionate_gen	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.0018386282977722664	Butyricimonas virosa	propionate_gen	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	0.018899388549193995	Butyricimonas	propionate_gen	Bacteroidetes <phylum>
+week1	U029	BRMPS	8.640064725333334	26.790382713333333	6.399664768666667	0	28.5	3.8482917860349766e-4	Alistipes obesi	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.042659649382899074	Faecalibacterium prausnitzii	butyrogen_focused	Firmicutes
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.0052258997072013634	Anaerostipes hadrus	butyrogen_focused	Firmicutes
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.042659649382899074	Faecalibacterium prausnitzii	butyrogen_flint	Firmicutes
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.011267188021200105	Holdemanella biformis	butyrogen_flint	Firmicutes
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.02027352581446203	Alistipes putredinis	butyrogen_flint	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.008265075423446129	Odoribacter splanchnicus	butyrogen_flint	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.0031503650717171344	[Eubacterium] hallii	butyrogen_flint	Firmicutes
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.0011489566732144842	Coprococcus catus	butyrogen_flint	Firmicutes
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.07390385827063489	Bifidobacterium	RS_degraders	Actinobacteria <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.025981246062043658	Bacteroides <genus>	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.008228012304955339	Bacteroides fragilis	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.14688113857900004	Bacteroides uniformis	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.08987806234016531	Bacteroides vulgatus	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.0531114487973018	Bacteroides ovatus	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.02027352581446203	Alistipes putredinis	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.008265075423446129	Odoribacter splanchnicus	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	2.5944182943552874e-4	Prevotella buccalis	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	4.818205403802676e-4	Parabacteroides merdae	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.11259775397501945	Bacteroides stercoris	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	2.5944182943552874e-4	Bacteroides caccae	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.005744783366072421	Alistipes finegoldii	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.041362440235721436	Alistipes	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	5.559467773618472e-4	Bacteroides nordii	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	1.8531559245394907e-4	Bacteroides intestinalis	propionate_gen	Bacteroidetes <phylum>
+week1	U032	BRMPS	9.24060200625	20.37354097	4.01207915275	2	20	0.018828064193321226	Coprobacter fastidiosus	propionate_gen	Bacteroidetes <phylum>
