@@ -1,6 +1,6 @@
 ---
 title: "Lab 7 - Alpha diversity metrics"
-author: "Kristi Gdanetz MacCready"
+author: "Yilin Guan"
 date: "11/4/2019"
 output: html_document
 ---
@@ -90,7 +90,7 @@ There are numerous alpha diversity metrics, however we are going to focus on num
 
 ### Calculate richness
 ```{r}
-samp_data <- read_delim("raw_data/all_data_indv.txt", 
+samp_data <- read_delim("Lab7/raw_data/all_data_indv.txt", 
                             delim = "\t", escape_double = FALSE, 
                             trim_ws = TRUE, 
                             col_types = cols(Bristol_numeric = col_number(),
@@ -113,8 +113,9 @@ richness_df <- physq_obj %>%
   summarise(avg_richness = round(mean(richness), digits = 0)) #calculate average richness per person, per week 
 
 # save richness data 
-write_delim(richness_df, path="curated_data/richness_curated.csv",
+write_delim(richness_df, path="Lab7/curated_data/richness_curated.csv",
             delim = ",", quote = FALSE, col_names = TRUE)
+
 ```
 
 ### Homework 7.1 
@@ -122,10 +123,46 @@ write_delim(richness_df, path="curated_data/richness_curated.csv",
 We can use these alpha diversity metrics (richness, shannon, or others) in the same manner as any other measured characteristic. So, if we want to determine if the consumption of a supplement changed richness we would use the data frame created in the section above to conduct a paired t-test. 
 ```{r}
 # check assumptions 
+#sample size
+richness_df %>%
+  filter(study_week == "week1" | study_week == "week3",
+         supplement_consumed == "BRMPS") %>% 
+  group_by(supplement_consumed,study_week) %>% #set groups to what we are comparing
+  summarise(sample_size = n())
+#here the sample size is 88 and 97
+# normal distribution 
+richness_sup1 <- richness_df %>%
+  filter(supplement_consumed == "BRMPS",
+         study_week == "week1")
+shapiro.test(richness_sup1$avg_richness) 
+ggplot(richness_sup1, aes(x = avg_richness)) + geom_histogram()
+#here the p value is 0.9 which is large and fails to reject the null. Also, the graph shells normal distrubution. Therefore, the data set is indeed normal-distributed.
+richness_sup3 <- richness_df %>%
+  filter(supplement_consumed == "BRMPS",
+         study_week == "week3") 
+shapiro.test(richness_sup3$avg_richness) 
+ggplot(richness_sup3, aes(x = avg_richness)) + geom_histogram()
+#here the p value is 0.98 which is large and fails to reject the null. Also, the graph shells normal distrubution. Therefore, the data set is indeed normal-distributed.
+#variance
 
+var.test(x = richness_sup1$avg_richness, 
+         y = richness_sup3$avg_richness, 
+         alternative = "two.sided")
+#here the p value is 0.4641, which is large and fails to reject the null hypothesis. Therefore, there is the equal variance. 
 # write code for paired t-test here 
+join_supp <- inner_join(richness_sup1, richness_sup3,
+                        by = c("participant_id", "semester", "supplement_consumed"))%>%
+
+  rename(avg_richness_1 = avg_richness.x,
+         avg_richness_3 = avg_richness.y)%>%
+           select(-starts_with("study_week")) 
+
+t.test(x = join_supp$avg_richness_1, 
+       y =join_supp$avg_richness_3, 
+       alternative = "less", paired = TRUE) 
 
 # p-value = ?
+#the p-value is 1 which means it is fairly large and thus fails to reject the null hypothesis. therfore, the richness doesn't change from week 1 to week 3 in individuals who consumed BRMPS
 ```
 
 Did you conclude the richness changed from week 1 to week 3 in individuals who consumped BRMPS?
@@ -153,7 +190,10 @@ rich2 <- rich1 +
   theme(legend.position = "none")
 rich2
 
-save_plot() #upload plot to your GitHub fork 
+save_plot(filename = "Lab7/figures/correlation of richness.pdf", 
+          plot=rich2,
+           nrow = 3, ncol = 6, 
+          base_aspect_ratio = 1.1) #upload plot to your GitHub fork 
 ```
 
 
@@ -175,17 +215,56 @@ simpson_df <- physq_obj %>%
   summarise(avg_richness = round(mean(simpson), digits = 2))  #use 2 digits since 0-1 scale 
 
 # save Simpson data 
-write_delim()
+write_delim(simpson_df, path="Lab7/curated_data/simpson_curated.csv",
+            delim = ",", quote = FALSE, col_names = TRUE)
 ```
 
 ### Homework 7.2 
 Determine if Shannon Diversity differed significanty before vs. during supplement consumption. Write your conclusions in the space below.
 ```{r}
 # check assumptions 
+#sample size
+simpson_df %>%
+  filter(study_week == "week1" | study_week == "week3",
+         supplement_consumed == "BRMPS") %>% 
+  group_by(supplement_consumed,study_week) %>% #set groups to what we are comparing
+  summarise(sample_size = n())
+#here the sample size is 88 and 97
+# normal distribution 
+simpson_df_1 <- simpson_df %>%
+  filter(supplement_consumed == "BRMPS",
+         study_week == "week1")
+shapiro.test(simpson_df_1$avg_richness) 
+ggplot(simpson_df_1, aes(x = avg_richness)) + geom_histogram()
+#here the p value is 1.619e-10 which is small and reject  the null.  Therefore, the data set is not normal-distributed.
+simpson_df_3 <- simpson_df %>%
+  filter(supplement_consumed == "BRMPS",
+         study_week == "week3") 
+shapiro.test(simpson_df_3$avg_richness) 
+ggplot(simpson_df_3, aes(x = avg_richness)) + geom_histogram()
+#here the p value is 9.946e-12 which is small and reject  the null.  Therefore, the data set is not normal-distributed.
 
+#variance
+var.test(x = simpson_df_1$avg_richness, 
+         y = simpson_df_3$avg_richness, 
+         alternative = "two.sided")
+#here the p value is 0.9388, which is large and fails to reject the null hypothesis. Therefore, there is the equal variance. 
+#unnormal yet equal variance
 # write code for paired t-test here 
+join_supp_sim <- inner_join(simpson_df_1, simpson_df_3,
+                        by = c("participant_id", "semester", "supplement_consumed"))%>%
+
+  rename(avg_richness_1 = avg_richness.x,
+         avg_richness_3 = avg_richness.y)%>%
+           select(-starts_with("study_week")) 
+
+wilcox.test(x = join_supp_sim$avg_richness_1, 
+       y =join_supp_sim$avg_richness_3, 
+       alternative = "less", paired = TRUE) 
 
 # p-value = ?
+
+# p-value = 0.986 which is large enough and thus fails to reject the null therefore, the Shannon Diversity value not changs after supplement consumption 
 ```
 
 ### Plot simpson 
@@ -207,7 +286,10 @@ simp2 <- simp1 +
   theme(legend.position = "none")
 simp2
 
-save_plot() #upload plot to your GitHub fork 
+save_plot(filename = "Lab7/figures/correlation of Simpson.pdf", 
+          plot=simp2,
+           nrow = 3, ncol = 6, 
+          base_aspect_ratio = 1.1) #upload plot to your GitHub fork 
 ```
 
 
