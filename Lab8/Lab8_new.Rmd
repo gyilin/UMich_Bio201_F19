@@ -222,54 +222,52 @@ physq_long_genus <- physq_sub %>%
   arrange(genus) #sort alphabetically by taxa
 
 #plot
-ggplot(data = physq_long_genus, 
+genus_graph <- ggplot(data = physq_long_genus, 
        aes(x = study_week, #specify the arguments for each axis
            y = abundance, 
            fill = genus)) + #set fill to the taxa rank
   geom_col() + #plot type for bars 
   facet_grid(~semester) + #panel for each semester
   xlab(NULL) + 
-  theme(axis.text.x = element_text(angle = 90,
+  theme(axis.text.x = element_text(angle = 70,
                                    vjust = 0.5)) + #clean up x-axis labels 
   ylab("Relative Abundance (genus > 0.1%)")  #improve y-axis labels 
-  
+  save_plot(filename = "Lab8/figures/genus.pdf",
+          plot = genus_graph,
+          nrow = 1, ncol = 8, 
+          base_aspect_ratio = 1.1)
 
-
-
-
-  # improve plot legend readability 
-  scale_fill_manual(name = "Genus", #change name for legend
-                    values = taxa_colors, #indicate colors from vector of custom colors 
-                    #current legend labels
-                    breaks = c("Actinobacteria <actinobacteria>",
-                              "Bacteroidetes <Bacteroidetes>",
-                              "Cyanobacteria/Proteobacteria",
-                              "Euryarchaeota",
-                              "Firmicutes",
-                              "Firmicutes/Actinobacteria_<actinobacteria>",
-                              "Fusobacteria <Fusobacteria>",
-                              "Lentisphaerae",
-                              "Proteobacteria",
-                              "Tenericutes",
-                              "Verrucomicrobia"),
-                    #new legend labels 
-                    labels = c("Actinobacteria",
-                              "Bacteroidetes",
-                              "Cyanobacteria/Proteobacteria",
-                              "Euryarchaeota",
-                              "Firmicutes",
-                              "Firmicutes/Actinobacteria",
-                              "Fusobacteria",
-                              "Lentisphaerae",
-                              "Proteobacteria",
-                              "Tenericutes",
-                              "Verrucomicrobia"))
 ```
 
 ### Homework 8.2
 Generate a bar plot at the order level, create and save the plot to a figures folder. 
 ```{r}
+physq_long_order <- physq_sub %>%
+  tax_glom(taxrank = "order") %>% #agglomerate at phylum level               
+  transform_sample_counts(function(x) {x/sum(x)} ) %>% #calculate rel abund
+  psmelt() %>% #melt to long format for ggplot
+  rename_all(tolower) %>% #update new columns to match style conventions 
+  select(-sample_number, -quantity_compliant, -use_data, 
+         -ends_with("_mm"), -ends_with("_mmol_kg"), 
+         -starts_with("bristol"), -ph) %>% #drop columns not using
+  filter(abundance > 0.001) %>% #remove low abund taxa
+  arrange(order) #sort alphabetically by taxa
 
+#plot
+order_tax_graph <- ggplot(data = physq_long_order, 
+       aes(x = study_week, #specify the arguments for each axis
+           y = abundance, 
+           fill = order)) + #set fill to the taxa rank
+  geom_col() + #plot type for bars 
+  facet_grid(~semester) + #panel for each semester
+  xlab(NULL) + 
+  theme(axis.text.x = element_text(angle = 79,
+                                   vjust = 0.5))+#clean up x-axis labels 
+  ylab("Relative Abundance (Order > 0.1%)")
+save_plot(filename = "Lab8/figures/order.pdf",
+          plot = order_tax_graph,
+          nrow = 1, ncol = 8, 
+          base_aspect_ratio = 1.1)
 ```
 
 
@@ -289,7 +287,13 @@ physq_bc
 ### Homework 8.3
 Conduct an ordination analysis using Jaccard index. Record the stress value. 
 ```{r}
-physq_j <- ordination()
+physq_j <- ordinate(physq_sub, 
+                      method = "NMDS", 
+                      k=2, maxit=100, try=50,
+                      distance = "jaccard")
+physq_j
+#stress value:
+#Run 0 stress 0.2330285 Run 1 stress 0.2597528 Run 2 stress 0.2518498 Run 3 stress 0.2583904 Run 4 stress 0.2497398 Run 5 stress 0.2418675 Run 6 stress 0.2640926 Run 7 stress 0.242729 Run 8 stress 0.2376124 Run 9 stress 0.2379673 Run 10 stress 0.2601498 Run 11 stress 0.2526582 Run 12 stress 0.2447506 Run 13 stress 0.2527811 Run 14 stress 0.2334993, Run 15 stress 0.2348453 Run 16 stress 0.2444402 Run 17 stress 0.4190191 Run 18 stress 0.4190068 Run 19 stress 0.2304688 Run 20 stress 0.2478321 Run 21 stress 0.2429822 Run 22 stress 0.2459456 Run 23 stress 0.2455483 Run 24 stress 0.2476332 Run 25 stress 0.2480926 Run 26 stress 0.2479847 Run 27 stress 0.2615034 Run 28 stress 0.2346342 Run 29 stress 0.2377953 Run 30 stress 0.246468 Run 31 stress 0.2389541 Run 32 stress 0.24861 Run 33 stress 0.2529081 Run 34 stress 0.2373592 Run 35 stress 0.2560642 Run 36 stress 0.24435 Run 37 stress 0.2491119 Run 38 stress 0.2420599 Run 39 stress 0.2429601 Run 40 stress 0.2336562 Run 41 stress 0.2501396 Run 42 stress 0.2533679 Run 43 stress 0.248062 Run 44 stress 0.2324274 Run 45 stress 0.2432075 Run 46 stress 0.2527952 Run 47 stress 0.2434924 Run 48 stress 0.241073 Run 49 stress 0.2412904 Run 50 stress 0.2447381 
 ```
 
 ### Plot results
@@ -324,12 +328,36 @@ ordplot2 <- ordplot1 +
                      values = c(7, 8),
                      labels = c("week 1", "week 3")) #change default shapes 
 print(ordplot2)
+save_plot(filename = "Lab8/figures/Bray Curtis.pdf",
+          plot = ordplot2,
+          nrow = 1, ncol = 2, 
+          base_aspect_ratio = 1.1)
 ```
 
 ### Homework 8.4
 Plot the results of the Jaccard ordination. Use colors and shapes different than those in the figure above. Clean up axis labels where necessary. Save the plot to figures folder. 
 ```{r}
-
+ordplot3 <- plot_ordination(physeq = physq_sub, 
+                     ordination = physq_j, 
+                     type = "samples", 
+                     color = "semester", 
+                     shape = "study_week")+
+  geom_point(size=3) + #increase point size
+  scale_color_manual(name = "Semester",
+                     values = c("darkseagreen4", 
+                                "slategray3", 
+                                "lightpink3"),
+                     labels = c("Fall 2016",
+                                "Winter 2016", 
+                                "Winter 2018")) + #change default color palette 
+  scale_shape_manual(name = "Study week",
+                     values = c(14, 15),
+                     labels = c("week 1", "week 3")) #change default shapes 
+print(ordplot3)
+save_plot(filename = "Lab8/figures/Jaccard.pdf",
+          plot = ordplot3,
+          nrow = 1, ncol = 2, 
+          base_aspect_ratio = 1.1)
 ```
 
 ### Statistical test
@@ -358,7 +386,20 @@ In our results above, the p-values of 0.001 indicate that the groupings of sampl
 ### Homework 8.5
 Conduct an ADONIS test on a distance matrix calculated with the Jaccard index. Write your interpretations of the data below, be sure to explicity state the calculated R- and p-values. 
 ```{r}
+#start with same phyloseq object as above 
+dat_jaccard <- phyloseq::distance(physq_sub, method = "jaccard") 
 
+sampledf_jaccard <- physq_sub %>% 
+  sample_data(.) %>% #extract sample data from phyloseq object 
+  as(., "data.frame") #convert to data frame for adonis()
+
+# run test
+adn_res_j <- adonis(formula = dat_jaccard ~ semester * study_week, 
+                  data = sampledf_jaccard)
+
+# view results 
+print(adn_res_j)
+#In our results above, the p-values of 0.001 indicate that the groupings of samples by semester or by study week is statistically significant. The R value of 0.02871 and 0.00774. both are fairly close to 0, indicating that the grouping of samples based by semester or study week are weak. When this occurs (low p and low R), the variation of the samples in the tested groups likely is influencing the results of the test. 
 ```
 
 
